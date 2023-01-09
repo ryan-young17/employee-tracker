@@ -102,14 +102,14 @@ const chooseOption = (type) => {
                     type: 'rawlist',
                     message: 'What is te employee\'s role?',
                     choices: [ // NEEDS TO BE PULLED FROM CURRENT ROLE LIST
-                        'Sales Lead',
-                        'Salesperson',
-                        'Lead Engineer',
-                        'Software Engineer',
-                        'Account Manager',
-                        'Accountant',
-                        'Legal Team Lead',
-                        'Lawyer',
+                        '1',
+                        '2',
+                        '3',
+                        '4',
+                        '5',
+                        '6',
+                        '7',
+                        '8',
                     ],
                     name: 'role',
                 },
@@ -117,22 +117,28 @@ const chooseOption = (type) => {
                     type: 'rawlist',
                     message: 'Who is the employee\'s manager?',
                     choices: [ // NEEDS TO BE PULLED FROM CURRENT EMPLOYEE LIST
-                        'John Doe',
-                        'Mike Chan',
-                        'Ashley Rodriguez',
-                        'Kevin Tupik',
-                        'Kunal Singh',
-                        'Malia Brown',
-                        'Sarah Lourd',
-                        'Tom Allen',
+                        '1',
+                        '2',
+                        '3',
+                        '4',
+                        '5',
+                        '6',
+                        '7',
+                        '8',
                     ],
                     name: 'manager',
                 },
             ])
             .then((answer) => {
                 // CREATE A FUNCTION THAT ADDS THIS EMPLOYEE TO THE DATABASE
-                console.log(`Added ${answer.firstName} ${answer.lastName} to the database`);
-                init();
+                db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?)`, [[answer.firstName, answer.lastName, answer.role, answer.manager]], (err) => {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        console.log(`Added ${answer.firstName} ${answer.lastName} to the database`);
+                        init();
+                    }
+                })
             });
             break;
         }
