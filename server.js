@@ -32,23 +32,133 @@ const chooseOption = (type) => {
             break;
         }
         case 'ADD A DEPARTMENT': {
-            console.log('Will add a department');
-            init();
+            prompt({
+                type: 'input',
+                message: 'What is the name of the department?',
+                name: 'department',
+            })
+            .then((answer) => {
+                console.log(`Added ${answer.department} to the database`);
+                init();
+            });
             break;
         }
         case 'ADD A ROLE': {
-            console.log('Will add a role');
-            init();
+            prompt([
+                {
+                    type: 'input',
+                    message: 'What is the name of the role?',
+                    name: 'role',
+                },
+                {
+                    type: 'input',
+                    message: 'What is the salary of the role?',
+                    name: 'salary',
+                },
+                {
+                    type: 'rawlist',
+                    message: 'What department does this role belong to?',
+                    choices: [
+                        'Sales',
+                        'Engineering',
+                        'Finance',
+                        'Legal',
+                    ],
+                    name: 'salary',
+                },
+            ])
+            .then((answer) => {
+                console.log(`Added ${answer.role} to the database`);
+                init();
+            });
             break;
         }
         case 'ADD AN EMPLOYEE': {
-            console.log('Will add an employee');
-            init();
+            prompt([
+                {
+                    type: 'input',
+                    message: 'What is the employee\'s first name?',
+                    name: 'firstName',
+                },
+                {
+                    type: 'input',
+                    message: 'What is the employee\'s last name?',
+                    name: 'lastName',
+                },
+                {
+                    type: 'rawlist',
+                    message: 'What is te employee\'s role?',
+                    choices: [
+                        'Sales Lead',
+                        'Salesperson',
+                        'Lead Engineer',
+                        'Software Engineer',
+                        'Account Manager',
+                        'Accountant',
+                        'Legal Team Lead',
+                        'Lawyer',
+                    ],
+                    name: 'role',
+                },
+                {
+                    type: 'rawlist',
+                    message: 'Who is the employee\'s manager?',
+                    choices: [
+                        'John Doe',
+                        'Mike Chan',
+                        'Ashley Rodriguez',
+                        'Kevin Tupik',
+                        'Kunal Singh',
+                        'Malia Brown',
+                        'Sarah Lourd',
+                        'Tom Allen',
+                    ],
+                    name: 'manager',
+                },
+            ])
+            .then((answer) => {
+                console.log(`Added ${answer.firstName} ${answer.lastName} to the database`);
+                init();
+            });
             break;
         }
         case 'UPDATE AN EMPLOYEE ROLE': {
-            console.log('Will update an employee role');
-            init();
+            prompt([
+                {
+                    type: 'rawlist',
+                    message: 'Which employee\'s role would you like to update?',
+                    choices: [
+                        'John Doe',
+                        'Mike Chan',
+                        'Ashley Rodriguez',
+                        'Kevin Tupik',
+                        'Kunal Singh',
+                        'Malia Brown',
+                        'Sarah Lourd',
+                        'Tom Allen',
+                    ],
+                    name: 'employee',
+                },
+                {
+                    type: 'rawlist',
+                    message: 'Which role would you like to assign to the selected employee?',
+                    choices: [
+                        'Sales Lead',
+                        'Salesperson',
+                        'Lead Engineer',
+                        'Software Engineer',
+                        'Account Manager',
+                        'Accountant',
+                        'Legal Team Lead',
+                        'Lawyer',
+                    ],
+                    name: 'role',
+                },
+            ])
+            .then((answer) => {
+                console.log(`Updated ${answer.employee}'s role!`);
+                init();
+            });
             break;
         }
     }
