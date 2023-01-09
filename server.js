@@ -38,9 +38,14 @@ const chooseOption = (type) => {
                 name: 'department',
             })
             .then((answer) => {
-                // CREATE A FUNCTION THAT ADDS THIS DEPARTMENT TO THE DATABASE
-                console.log(`Added ${answer.department} to the database`);
-                init();
+                db.query(`INSERT INTO department (name) VALUES (?)`, [answer.department], (err) => {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        console.log(`Added ${answer.department} to the database`);
+                        init();
+                    }
+                })
             });
             break;
         }
@@ -59,7 +64,7 @@ const chooseOption = (type) => {
                 {
                     type: 'rawlist',
                     message: 'What department does this role belong to?',
-                    choices: [ // NEEDS TO BE PULLED FROM CURRENT DEPARTMENT LIST
+                    choices: [ // NEEDS TO BE PULLED FROM CURRENT DEPARTMENT LIST * USE THE db.query FUNCTION
                         'Sales',
                         'Engineering',
                         'Finance',
