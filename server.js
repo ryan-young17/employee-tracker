@@ -38,6 +38,7 @@ const chooseOption = (type) => {
                 name: 'department',
             })
             .then((answer) => {
+                // CREATE A FUNCTION THAT ADDS THIS DEPARTMENT TO THE DATABASE
                 console.log(`Added ${answer.department} to the database`);
                 init();
             });
@@ -58,7 +59,7 @@ const chooseOption = (type) => {
                 {
                     type: 'rawlist',
                     message: 'What department does this role belong to?',
-                    choices: [
+                    choices: [ // NEEDS TO BE PULLED FROM CURRENT DEPARTMENT LIST
                         'Sales',
                         'Engineering',
                         'Finance',
@@ -68,6 +69,7 @@ const chooseOption = (type) => {
                 },
             ])
             .then((answer) => {
+                // CREATE A FUNCTION THAT ADDS THIS ROLE TO THE DATABASE
                 console.log(`Added ${answer.role} to the database`);
                 init();
             });
@@ -88,7 +90,7 @@ const chooseOption = (type) => {
                 {
                     type: 'rawlist',
                     message: 'What is te employee\'s role?',
-                    choices: [
+                    choices: [ // NEEDS TO BE PULLED FROM CURRENT ROLE LIST
                         'Sales Lead',
                         'Salesperson',
                         'Lead Engineer',
@@ -103,7 +105,7 @@ const chooseOption = (type) => {
                 {
                     type: 'rawlist',
                     message: 'Who is the employee\'s manager?',
-                    choices: [
+                    choices: [ // NEEDS TO BE PULLED FROM CURRENT EMPLOYEE LIST
                         'John Doe',
                         'Mike Chan',
                         'Ashley Rodriguez',
@@ -117,6 +119,7 @@ const chooseOption = (type) => {
                 },
             ])
             .then((answer) => {
+                // CREATE A FUNCTION THAT ADDS THIS EMPLOYEE TO THE DATABASE
                 console.log(`Added ${answer.firstName} ${answer.lastName} to the database`);
                 init();
             });
@@ -127,7 +130,7 @@ const chooseOption = (type) => {
                 {
                     type: 'rawlist',
                     message: 'Which employee\'s role would you like to update?',
-                    choices: [
+                    choices: [ // NEEDS TO BE PULLED FROM CURRENT EMPLOYEE LIST
                         'John Doe',
                         'Mike Chan',
                         'Ashley Rodriguez',
@@ -142,7 +145,7 @@ const chooseOption = (type) => {
                 {
                     type: 'rawlist',
                     message: 'Which role would you like to assign to the selected employee?',
-                    choices: [
+                    choices: [ // NEEDS TO BE PULLED FROM CURRENT ROLE LIST
                         'Sales Lead',
                         'Salesperson',
                         'Lead Engineer',
@@ -156,6 +159,7 @@ const chooseOption = (type) => {
                 },
             ])
             .then((answer) => {
+                // CREATE A FUNCTION THAT UPDATES THIS EMPLOYEE IN THE DATABASE
                 console.log(`Updated ${answer.employee}'s role!`);
                 init();
             });
