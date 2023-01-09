@@ -74,7 +74,6 @@ const chooseOption = (type) => {
                 },
             ])
             .then((answer) => {
-                // CREATE A FUNCTION THAT ADDS THIS ROLE TO THE DATABASE
                 db.query(`INSERT INTO role (title, salary, department_id) VALUES (?)`, [[answer.role, answer.salary, answer.department]], (err) => {
                     if (err) {
                         console.log(err)
@@ -130,7 +129,6 @@ const chooseOption = (type) => {
                 },
             ])
             .then((answer) => {
-                // CREATE A FUNCTION THAT ADDS THIS EMPLOYEE TO THE DATABASE
                 db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?)`, [[answer.firstName, answer.lastName, answer.role, answer.manager]], (err) => {
                     if (err) {
                         console.log(err)
@@ -176,7 +174,7 @@ const chooseOption = (type) => {
                 },
             ])
             .then((answer) => {
-                // CREATE A FUNCTION THAT UPDATES THIS EMPLOYEE IN THE DATABASE
+                // CREATE A FUNCTION THAT UPDATES THIS EMPLOYEE IN THE DATABASE * USE UPDATE FUNCTION ACTIVITY 10 UNSOLVED
                 console.log(`Updated ${answer.employee}'s role!`);
                 init();
             });
