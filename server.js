@@ -7,3 +7,25 @@ const db = mysql.createConnection({
     user: "root",
     database: "employee_db",
 });
+
+switch(type) {
+    case 'VIEW ALL EMPLOYEES': {
+        db.query('SELECT * FROM employee', (err, employees) => {
+            console.table(employees);
+        });
+        break;
+    }
+    case 'VIEW ALL DEPARTMENTS': {
+        db.query('SELECT * FROM department', (err, departments) => {
+            console.table(departments);
+        });
+        break;
+    }
+    case 'VIEW ALL ROLES': {
+        db.query('SELECT * FROM role', (err, roles) => {
+            console.table(roles);
+        });
+        break;
+    }
+}
+
