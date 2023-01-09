@@ -31,6 +31,26 @@ const chooseOption = (type) => {
             });
             break;
         }
+        case 'ADD A DEPARTMENT': {
+            console.log('Will add a department');
+            init();
+            break;
+        }
+        case 'ADD A ROLE': {
+            console.log('Will add a role');
+            init();
+            break;
+        }
+        case 'ADD AN EMPLOYEE': {
+            console.log('Will add an employee');
+            init();
+            break;
+        }
+        case 'UPDATE AN EMPLOYEE ROLE': {
+            console.log('Will update an employee role');
+            init();
+            break;
+        }
     }
 };
 
@@ -42,6 +62,10 @@ const init = () => {
             'VIEW ALL EMPLOYEES',
             'VIEW ALL DEPARTMENTS',
             'VIEW ALL ROLES',
+            'ADD A DEPARTMENT',
+            'ADD A ROLE',
+            'ADD AN EMPLOYEE',
+            'UPDATE AN EMPLOYEE ROLE',
         ],
         name: 'type',
     })
