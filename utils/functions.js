@@ -1,12 +1,4 @@
-const inquirer = require('inquirer');
-const prompt = inquirer.createPromptModule();
-const mysql = require('mysql2');
-require('console.table');
 
-const db = mysql.createConnection({
-    user: "root",
-    database: "employee_db",
-});
 
 const selectNameAndValue = (table, name, value) => {
     return db.promise().query('SELECT ?? AS name, ?? AS value FROM ??', [name, value, table]);
@@ -14,10 +6,6 @@ const selectNameAndValue = (table, name, value) => {
 
 const selectEmployeeNames = (value) => {
     return db.promise().query(`SELECT CONCAT(employee.first_name, ' ', employee.last_name) AS name, ?? AS value FROM employee`, value);
-};
-
-const updateEmployeeInfo = (roleId, employeeId) => {
-    return db.promise().query('UPDATE employee SET role_id = ? WHERE id = ?', [roleId, employeeId]);
 };
 
 const selectAllEmployeeInfo = async () => {
@@ -65,14 +53,9 @@ const addDepartment = () => {
         name: 'department',
     })
     .then((answer) => {
-        db.query(`INSERT INTO department (name) VALUES (?)`, [answer.department], (err) => {
-            if (err) {
-                console.log(err)
-            } else {
-                console.log(`Added ${answer.department} to the database`);
-                init();
-            }
-        })
+        db.query(`INSERT INTO department (name) VALUES (?)`, [answer.department], (err) =>
+        err ? console.log(err) : console.log(`Added ${answer.department} to the database`));
+        init();
     });
 };
 
@@ -97,20 +80,15 @@ const addRole = async () => {
         },
     ])
     .then((answer) => {
-        db.query(`INSERT INTO role (title, salary, department_id) VALUES (?)`, [[answer.role, answer.salary, answer.department]], (err) => {
-            if (err) {
-                console.log(err)
-            } else {
-                console.log(`Added ${answer.role} to the database`);
-                init();
-            }
-        })
+        db.query(`INSERT INTO role (title, salary, department_id) VALUES (?)`, [[answer.role, answer.salary, answer.department]], (err) =>
+        err ? console.log(err) : console.log(`Added ${answer.role} to the database`));
+        init();
     });
 };
 
 const addEmployee = async () => {
     const [roles] = await selectNameAndValue('role', 'title', 'id');
-    const [managers] = await selectEmployeeNames('id');
+    const [managers] = await selectNameAndValue('employee', 'last_name', 'id');
     prompt([
         {
             type: 'input',
@@ -136,20 +114,16 @@ const addEmployee = async () => {
         },
     ])
     .then((answer) => {
-        db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?)`, [[answer.firstName, answer.lastName, answer.role, answer.manager]], (err) => {
-            if (err) {
-                console.log(err)
-            } else {
-                console.log(`Added ${answer.firstName} ${answer.lastName} to the database`);
-                init();
-            }
-        })
+        db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?)`, [[answer.firstName, answer.lastName, answer.role, answer.manager]],
+        (err) => err ? console.log(err) : console.log(`Added ${answer.firstName} ${answer.lastName} to the database`));
+        init();
     });
 };
 
 const updateEmployee = async () => {
     const [roles] = await selectNameAndValue('role', 'title', 'id');
     const [employees] = await selectEmployeeNames('id');
+    console.log(employees);
     prompt([
         {
             type: 'rawlist',
@@ -165,8 +139,8 @@ const updateEmployee = async () => {
         },
     ])
     .then((answer) => {
-        updateEmployeeInfo(answer.role, answer.employee);
-        console.log(`Updated role!`);
+        db.query(`UPDATE employee SET role_id = ? WHERE id = ?`, [[answer.role, answer.employee]],
+        (err) => err ? console.log(err) : console.log('Updated role!'));
         init();
     });
 };
@@ -201,32 +175,7 @@ const chooseOption = (type) => {
             updateEmployee();
             break;
         }
-        case 'Exit': {
-            process.exit(0);
-        }
     }
 };
 
-const init = () => {
-    prompt({
-        type: 'rawlist',
-        message: 'What would you like to do?',
-        choices: [
-            'VIEW ALL EMPLOYEES',
-            'VIEW ALL DEPARTMENTS',
-            'VIEW ALL ROLES',
-            'ADD A DEPARTMENT',
-            'ADD A ROLE',
-            'ADD AN EMPLOYEE',
-            'UPDATE AN EMPLOYEE ROLE',
-            'EXIT',
-        ],
-        name: 'type',
-    })
-    .then((answer) => {
-        chooseOption(answer.type);
-    });
-};
-
-init();
-
+module.exports = {chooseOption};
