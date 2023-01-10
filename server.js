@@ -8,6 +8,7 @@ const db = mysql.createConnection({
     database: "employee_db",
 });
 
+
 const showAllEmployees = () => {
     db.query('SELECT * FROM employee', (err, employees) => {
         console.table(employees);
@@ -29,6 +30,14 @@ const showAllRoles = () => {
     });
 };
 
+const selectNameAndValue = (table, name, value) => {
+    return db.promise().query('SELECT ?? AS name, ?? AS value FROM ??', [name, value, table]);
+};
+
+const selectEmployeeNames = () => {
+    return db.promise().query(`SELECT CONCAT(employee.first_name, ' ', employee.last_name) AS name FROM employee`);
+};
+
 const addDepartment = () => {
     prompt({
         type: 'input',
@@ -47,7 +56,8 @@ const addDepartment = () => {
     });
 };
 
-const addRole = () => {
+const addRole = async () => {
+    const [departments] = await selectNameAndValue('department', 'name', 'id');
     prompt([
         {
             type: 'input',
@@ -62,12 +72,7 @@ const addRole = () => {
         {
             type: 'rawlist',
             message: 'What department does this role belong to?',
-            choices: [ // NEEDS TO BE PULLED FROM CURRENT DEPARTMENT LIST * USE THE db.query FUNCTION
-                '1',
-                '2',
-                '3',
-                '4',
-            ],
+            choices: departments,
             name: 'department',
         },
     ])
@@ -83,7 +88,9 @@ const addRole = () => {
     });
 };
 
-const addEmployee = () => {
+const addEmployee = async () => {
+    const [roles] = await selectNameAndValue('role', 'title', 'id');
+    const [managers] = await selectNameAndValue('employee', 'last_name', 'id');
     prompt([
         {
             type: 'input',
@@ -97,32 +104,14 @@ const addEmployee = () => {
         },
         {
             type: 'rawlist',
-            message: 'What is te employee\'s role?',
-            choices: [ // NEEDS TO BE PULLED FROM CURRENT ROLE LIST
-                '1',
-                '2',
-                '3',
-                '4',
-                '5',
-                '6',
-                '7',
-                '8',
-            ],
+            message: 'What is the employee\'s role?',
+            choices: roles,
             name: 'role',
         },
         {
             type: 'rawlist',
             message: 'Who is the employee\'s manager?',
-            choices: [ // NEEDS TO BE PULLED FROM CURRENT EMPLOYEE LIST
-                '1',
-                '2',
-                '3',
-                '4',
-                '5',
-                '6',
-                '7',
-                '8',
-            ],
+            choices: managers,
             name: 'manager',
         },
     ])
@@ -138,36 +127,20 @@ const addEmployee = () => {
     });
 };
 
-const updateEmployee = () => {
+const updateEmployee = async () => {
+    const [roles] = await selectNameAndValue('role', 'title', 'id');
+    const [employees] = await selectEmployeeNames();
     prompt([
         {
             type: 'rawlist',
             message: 'Which employee\'s role would you like to update?',
-            choices: [ // NEEDS TO BE PULLED FROM CURRENT EMPLOYEE LIST
-                'John Doe',
-                'Mike Chan',
-                'Ashley Rodriguez',
-                'Kevin Tupik',
-                'Kunal Singh',
-                'Malia Brown',
-                'Sarah Lourd',
-                'Tom Allen',
-            ],
+            choices: employees,
             name: 'employee',
         },
         {
             type: 'rawlist',
             message: 'Which role would you like to assign to the selected employee?',
-            choices: [ // NEEDS TO BE PULLED FROM CURRENT ROLE LIST
-                'Sales Lead',
-                'Salesperson',
-                'Lead Engineer',
-                'Software Engineer',
-                'Account Manager',
-                'Accountant',
-                'Legal Team Lead',
-                'Lawyer',
-            ],
+            choices: roles,
             name: 'role',
         },
     ])
