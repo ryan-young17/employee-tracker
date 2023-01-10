@@ -8,7 +8,6 @@ const db = mysql.createConnection({
     database: "employee_db",
 });
 
-
 const showAllEmployees = () => {
     db.query('SELECT * FROM employee', (err, employees) => {
         console.table(employees);
@@ -34,9 +33,10 @@ const selectNameAndValue = (table, name, value) => {
     return db.promise().query('SELECT ?? AS name, ?? AS value FROM ??', [name, value, table]);
 };
 
-const selectEmployeeNames = () => {
-    return db.promise().query(`SELECT CONCAT(employee.first_name, ' ', employee.last_name) AS name FROM employee`);
+const selectEmployeeNames = (value) => {
+    return db.promise().query(`SELECT CONCAT(employee.first_name, ' ', employee.last_name) AS name, ?? AS value FROM employee`, value);
 };
+
 
 const addDepartment = () => {
     prompt({
@@ -127,9 +127,14 @@ const addEmployee = async () => {
     });
 };
 
+const updateEmployeeInfo = (roleId, employeeId) => {
+    return db.promise().query('UPDATE employee SET role_id = ? WHERE id = ?', [roleId, employeeId]);
+};
+
 const updateEmployee = async () => {
     const [roles] = await selectNameAndValue('role', 'title', 'id');
-    const [employees] = await selectEmployeeNames();
+    const [employees] = await selectEmployeeNames('id');
+    console.log(employees);
     prompt([
         {
             type: 'rawlist',
@@ -146,7 +151,8 @@ const updateEmployee = async () => {
     ])
     .then((answer) => {
         // CREATE A FUNCTION THAT UPDATES THIS EMPLOYEE IN THE DATABASE * USE UPDATE FUNCTION ACTIVITY 10 UNSOLVED
-        console.log(`Updated ${answer.employee}'s role!`);
+        updateEmployeeInfo(answer.role, answer.employee);
+        console.log(`Updated role!`);
         init();
     });
 };
