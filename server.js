@@ -28,6 +28,7 @@ SELECT
   employee.last_name,
   role.title,
   role.salary,
+  department.name AS department,
   CONCAT(
     manager.first_name,
     ' ',
@@ -36,8 +37,10 @@ SELECT
 FROM employee
 JOIN role
 ON employee.role_id = role.id
-JOIN employee AS manager
+LEFT JOIN employee AS manager
 ON employee.manager_id = manager.id
+JOIN department
+ON role.department_id = department.id
     `
     const [allEmployees] = await db.promise().query(query);
     console.table(allEmployees);
