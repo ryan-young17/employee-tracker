@@ -1,4 +1,4 @@
-# Challenge 12 - Employee Tracker
+# Employee Tracker
 
 [Walk-through Video](https://drive.google.com/file/d/1YIq84INNY4X15nOEDRkt355wZJJFy3yy/view?usp=sharing)
 
